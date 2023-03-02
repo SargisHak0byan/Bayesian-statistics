@@ -1,0 +1,62 @@
+---
+title: "Homework I"
+author: "Sargis Hakobyan"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This is a problem related to conditional probability. We want to calculate the probability of a person having COVID-19 given that they tested positive for the virus.
+
+## Problem Statement
+
+Let's consider a diagnostic test for COVID-19. False positives and false negatives are highly undesirable. A false positive is when a test returns positive while the truth is negative. A false negative is when a test returns negative while the truth is positive.
+
+The probability of a false positive if the truth is negative is called the false positive rate. Similarly, the false negative rate is the probability of a false negative if the truth is positive. 
+
+We want to know the probability that someone has COVID-19 if the test is positive. For this, we need the following information:
+
+- Test true positive rate (one minus the false negative rate), also referred to as sensitivity, recall, or probability of detection, is estimated as `P(Test is positive | Person tested has Covid) = 93%`.
+- True negative rate (one minus the false positive rate) referred to as specificity, is estimated as `P(Test is negative | Person tested has no Covid) = 0.99`.
+- The prevalence of COVID-19 in the overall population is estimated to be `1.48` out of every `1000`. We therefore assume `P(Person tested has Covid) = 0.00148`. 
+
+Note that the above numbers are estimates. For our purposes, however, we will treat them as if they were exact.
+
+## Solution
+
+Let's define the following events:
+
+- $C$: person has COVID-19
+- $T$: test is positive
+
+We want to calculate $P(C | T)$, the probability that a person has COVID-19 given that the test is positive. 
+
+Using Bayes' theorem, we can express this probability as:
+
+$$P(C | T) = \frac{P(T | C) P(C)}{P(T)}$$
+
+We know that $P(T | C)$ is the true positive rate or sensitivity of the test, which is `0.93`. We also know that $P(C)$ is the prevalence of COVID-19 in the population, which is `0.00148`.
+
+To compute $P(T)$, the probability of a positive test result, we can use the law of total probability:
+
+$$P(T) = P(T | C) P(C) + P(T | \neg C) P(\neg C)$$
+
+where $\neg C$ means "not C" or "person does not have COVID-19". We know that $P(T | C) = 0.93$ and $P(T | \neg C)$ is the false positive rate, which is equal to `1 - specificity` or `1 - 0.99 = 0.01`. We also know that $P(\neg C) = 1 - P(C) = 0.99852$.
+
+Substituting the values, we get:
+
+$$P(T) = (0.93)(0.00148) + (0.01)(0.99852) = 0.0114$$
+
+Now we can compute $P(C | T)$:
+
+$$P(C | T) = \frac{(0.93)(0.00148)}{0.0114} \approx 0.121 = 12.1\%$$
+
+## Answer
+So the probability of a person having COVID-19 given a positive test result is approximately 0.121 or 12.1%.
